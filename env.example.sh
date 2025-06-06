@@ -6,4 +6,4 @@ record_name="home.antran22.xyz" # Which record you want to be synced. Full name 
 ttl="1"                         # Set the DNS TTL (seconds). 1 means automatic
 proxy="false"                   # Set the proxy to true or false
 sitename="Home Server"          # Title of site "Example Site"
-shoutrrr_url=""
+shoutrrr_url=""                 # An URL for notification. See https://containrrr.dev/shoutrrr/ for guidance

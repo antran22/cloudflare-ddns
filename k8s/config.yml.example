@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-ddns-secret
+stringData:
+  # The email used to login 'https://dash.cloudflare.com'
+  auth_email: ""
+
+  # Set to "global" for Global API Key or "token" for Scoped API Token
+  auth_method: "token"
+
+  # Your API Token or Global API Key
+  auth_key: ""
+
+  # An URL for notification. See https://containrrr.dev/shoutrrr/ for guidance
+  shoutrrr_url: ""
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflare-ddns-config
+data:
+  # Can be found in the "Overview" tab of your domain
+  zone_identifier: ""
+
+  # Which record you want to be synced. Full name $subdomain.$domain is needed
+  record_name: "" 
+
+  # Set the DNS TTL (seconds). 1 means automatic
+  ttl: "1"
+
+  # Set the proxy option to true or false
+  proxy: "false"
+
+  # Title of site "Example Site"
+  sitename: "Home Server"

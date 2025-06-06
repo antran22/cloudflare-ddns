@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cloudflare-ddns
+            image: antran2202/cloudflare-ddns:1.0.0
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: auth_email
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflare-ddns-secret
+                    key: auth_email
+
+              - name: shoutrrr_url
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflare-ddns-secret
+                    key: shoutrrr_url
+
+              - name: auth_method
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflare-ddns-secret
+                    key: auth_method
+
+              - name: auth_key
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflare-ddns-secret
+                    key: auth_key
+
+              - name: zone_identifier
+                valueFrom:
+                  configMapKeyRef:
+                    name: cloudflare-ddns-config
+                    key: zone_identifier
+
+              - name: record_name
+                valueFrom:
+                  configMapKeyRef:
+                    name: cloudflare-ddns-config
+                    key: record_name
+
+              - name: ttl
+                valueFrom:
+                  configMapKeyRef:
+                    name: cloudflare-ddns-config
+                    key: ttl
+
+              - name: proxy
+                valueFrom:
+                  configMapKeyRef:
+                    name: cloudflare-ddns-config
+                    key: proxy
+
+              - name: sitename
+                valueFrom:
+                  configMapKeyRef:
+                    name: cloudflare-ddns-config
+                    key: sitename
+
+          restartPolicy: OnFailure
+

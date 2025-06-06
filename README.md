@@ -10,3 +10,6 @@
 */5 * * * * root /bin/bash /etc/ddns/ipv4.sh
 ```
 
+
+## Kubernetes Cron Job
+- Apply `cronjob.yml` to run it on a Kubernetes cluster
