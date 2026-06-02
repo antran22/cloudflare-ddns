@@ -89,16 +89,19 @@ update=$(curl -s -X PATCH "https://api.cloudflare.com/client/v4/zones/$zone_iden
 case "$update" in
 *"\"success\":false"*)
   echo "DDNS Updater: $ip $record_name DDNS failed for $record_identifier ($ip). DUMPING RESULTS:\n$update" | logger -s
-  if [[ $shoutrrr_url != "" ]]; then
-    apprise "$noti_url" -m "$sitename Failed to update $record_name's new IP Address. New address is '$ip'."
-    apprise "$noti_url" -m "\`\`\`$update\`\`\`"
+  if [[ -n "$telegram_bot_token" && -n "$telegram_chat_id" ]]; then
+    curl -s -X POST "https://api.telegram.org/bot${telegram_bot_token}/sendMessage" \
+      -d chat_id="$telegram_chat_id" \
+      -d text="$sitename Failed to update $record_name's new IP Address. New address is '$ip'."
   fi
   exit 1
   ;;
 *)
   echo "DDNS Updater: $ip $record_name DDNS updated."
-  if [[ $shoutrrr_url != "" ]]; then
-    shoutrrr send "$shoutrrr_url" -m "$sitename Updated: $record_name's new IP Address is '$ip'"
+  if [[ -n "$telegram_bot_token" && -n "$telegram_chat_id" ]]; then
+    curl -s -X POST "https://api.telegram.org/bot${telegram_bot_token}/sendMessage" \
+      -d chat_id="$telegram_chat_id" \
+      -d text="$sitename Updated: $record_name's new IP Address is '$ip'"
   fi
   exit 0
   ;;
